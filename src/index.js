@@ -3,7 +3,9 @@ const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
 const Filter = require('bad-words');
-const { generateMessage } = require('./utils/messages');
+const { generateMessage, generateLocation } = require('./utils/messages');
+
+
 const app = express()
 const server = http.createServer(app);
 const io = socketio(server);
@@ -33,7 +35,7 @@ console.log('New webSocket connection')
     })
 
     socket.on('sendLocation', (cords, callback) => {
-        io.emit('locationMessage',`https://google.com/maps?q=${cords.latitude},${cords.longitude}`)
+        io.emit('locationMessage',generateLocation(`https://google.com/maps?q=${cords.latitude},${cords.longitude}`))
         callback()
     })
     socket.on('disconnect', () => {
